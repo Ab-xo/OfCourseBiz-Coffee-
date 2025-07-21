@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -15,6 +15,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PayNow from "./pages/PayNow";
+import OrderSuccess from "./pages/OrderSuccess";
 
 function App() {
   return (
@@ -35,6 +37,10 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route path="/pay-now/:orderId" element={<PayNow />} />
+
+          <Route path="/order-success/:orderId" element={<OrderSuccess />} />
           {/* Catch-all route for 404 */}
           <Route
             path="*"

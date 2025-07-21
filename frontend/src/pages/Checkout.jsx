@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { CreditCard, Banknote, Smartphone, ShoppingCart } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
 
 const Checkout = () => {
-  const { cartItems, getCartTotal } = useCart() || {
+  const navigate = useNavigate();
+  const { cartItems } = useCart() || {
     cartItems: [],
-    getCartTotal: () => ({ subtotal: 0, tax: 0, total: 0 }),
   };
 
   const [formData, setFormData] = useState({
@@ -17,10 +18,11 @@ const Checkout = () => {
     address: "",
     city: "",
     postalCode: "",
-    paymentMethod: "telebirr",
   });
 
   const [errors, setErrors] = useState({});
+  const [savedOrderId, setSavedOrderId] = useState(null);
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [shippingOption, setShippingOption] = useState("standard");
   const discountCode = "SAVE10";
@@ -38,15 +40,6 @@ const Checkout = () => {
     if (!formData.postalCode.match(/^\d{5}(-\d{4})?$/))
       newErrors.postalCode = "Valid postal code is required";
     return newErrors;
-  };
-
-  const handleSubmit = () => {
-    const formErrors = validateForm();
-    if (Object.keys(formErrors).length === 0) {
-      setShowConfirmation(true);
-    } else {
-      setErrors(formErrors);
-    }
   };
 
   const calculateTotals = () => {
@@ -68,6 +61,39 @@ const Checkout = () => {
     setFormData({ ...formData, [name]: value });
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  const handleSubmit = async () => {
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        const orderData = {
+          ...formData,
+          shippingOption,
+          paymentMethod: "pending",
+          cartItems,
+          subtotal,
+          discount,
+          tax,
+          shippingCost,
+          total,
+        };
+
+        const response = await axios.post(
+          "http://localhost:5000/api/orders/create",
+          orderData
+        );
+        const savedOrder = response.data;
+
+        setSavedOrderId(savedOrder._id);
+        setShowConfirmation(true); // show modal instead of redirecting
+      } catch (error) {
+        console.error("Error placing order:", error);
+        alert("Failed to place order. Please try again.");
+      }
+    } else {
+      setErrors(formErrors);
     }
   };
 
@@ -145,51 +171,6 @@ const Checkout = () => {
                   ))}
                 </div>
               </div>
-
-              {/* Payment Method */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  Payment Method
-                </h3>
-                <div className="space-y-3">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="telebirr"
-                      checked={formData.paymentMethod === "telebirr"}
-                      onChange={handleInputChange}
-                      className="mr-2"
-                    />
-                    <Smartphone className="h-5 w-5 text-blue-500 mr-2" />{" "}
-                    TeleBirr
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="bank"
-                      checked={formData.paymentMethod === "bank"}
-                      onChange={handleInputChange}
-                      className="mr-2"
-                    />
-                    <Banknote className="h-5 w-5 text-green-500 mr-2" /> Bank
-                    Transfer
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="credit"
-                      checked={formData.paymentMethod === "credit"}
-                      onChange={handleInputChange}
-                      className="mr-2"
-                    />
-                    <CreditCard className="h-5 w-5 text-purple-500 mr-2" />{" "}
-                    Credit Card
-                  </label>
-                </div>
-              </div>
             </motion.div>
 
             {/* Order Summary */}
@@ -203,10 +184,7 @@ const Checkout = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-4">
                 Order Summary
               </h3>
-              <div
-                className="space-y-6 max-h-[900px] overflow-y-auto pr-1"
-                style={{ scrollbarWidth: "thin" }}
-              >
+              <div className="space-y-6 max-h-[900px] overflow-y-auto pr-1">
                 <AnimatePresence>
                   {cartItems.map((item) => (
                     <motion.div
@@ -237,6 +215,7 @@ const Checkout = () => {
                   ))}
                 </AnimatePresence>
 
+                {/* Shipping */}
                 <div className="border-t pt-4">
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">
                     Shipping
@@ -261,6 +240,7 @@ const Checkout = () => {
                   ))}
                 </div>
 
+                {/* Totals */}
                 <div className="border-t pt-4">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
@@ -286,10 +266,11 @@ const Checkout = () => {
                   </div>
                 </div>
 
+                {/* Buttons */}
                 <div className="flex space-x-4 mt-4">
                   <Link
                     to="/menu"
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 py-3 rounded-lg font-semibold transition-colors inline-flex items-center justify-center no-scrollbar-on-hover"
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 py-3 rounded-lg font-semibold transition-colors inline-flex items-center justify-center"
                   >
                     <ShoppingCart className="h-5 w-5 mr-2" /> Continue Shopping
                   </Link>
@@ -297,7 +278,7 @@ const Checkout = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleSubmit}
-                    className="flex-1 bg-amber-800 hover:bg-amber-900 text-white py-3 rounded-lg font-semibold no-scrollbar-on-hover"
+                    className="flex-1 bg-amber-800 hover:bg-amber-900 text-white py-3 rounded-lg font-semibold"
                   >
                     Place Order
                   </motion.button>
@@ -307,6 +288,7 @@ const Checkout = () => {
           </div>
         )}
 
+        {/* Confirmation Modal */}
         <AnimatePresence>
           {showConfirmation && (
             <motion.div
@@ -325,53 +307,30 @@ const Checkout = () => {
                   Order Confirmation
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Thank you, {formData.fullName || "Customer"}! Your order for $
-                  {total.toFixed(2)} has been placed.
+                  Thank you, {formData.fullName || "Customer"}! Your order has
+                  been placed.
                 </p>
                 <div className="flex justify-end space-x-2">
-                  <Link
-                    to="/"
-                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
-                  >
-                    Back to Home
-                  </Link>
                   <button
-                    onClick={() => setShowConfirmation(false)}
+                    onClick={() => {
+                      setShowConfirmation(false);
+                      navigate(`/pay-now/${savedOrderId}`); // go to pay now page
+                    }}
                     className="px-4 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900"
                   >
-                    Close
+                    Pay Now
+                  </button>
+                  <button
+                    onClick={() => setShowConfirmation(false)}
+                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                  >
+                    Cancel
                   </button>
                 </div>
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        <style>{`
-          /* Hide scrollbar normally */
-          .no-scrollbar-on-hover::-webkit-scrollbar {
-            width: 8px;
-          }
-          .no-scrollbar-on-hover::-webkit-scrollbar-track {
-            background: transparent;
-          }
-          .no-scrollbar-on-hover::-webkit-scrollbar-thumb {
-            background-color: rgba(0,0,0,0.2);
-            border-radius: 4px;
-          }
-          /* Hide scrollbar on hover */
-          .no-scrollbar-on-hover:hover::-webkit-scrollbar {
-            display: none;
-          }
-          /* Firefox scrollbar hide */
-          .no-scrollbar-on-hover {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0,0,0,0.2) transparent;
-          }
-          .no-scrollbar-on-hover:hover {
-            scrollbar-width: none;
-          }
-        `}</style>
       </div>
     </section>
   );

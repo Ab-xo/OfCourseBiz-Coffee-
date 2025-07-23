@@ -216,7 +216,8 @@ const InfoCenter = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="mt-6 w-full bg-gradient-to-r from-amber-800 to-amber-900 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-            onClick={() => navigate("/blogs")}>
+            onClick={() => navigate("/blog", { state: { articles: news } })}
+>
               View All Blog
             </motion.button>
           </motion.div>

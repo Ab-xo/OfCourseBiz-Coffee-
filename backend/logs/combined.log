@@ -85,3 +85,35 @@
 {"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-21T21:18:39.885Z"}
 {"level":"info","message":"✅ MongoDB Connected: cluster1-shard-00-00.5rgxx.mongodb.net","timestamp":"2025-07-21T21:18:42.521Z"}
 {"level":"info","message":"🗄️  Database Name: BizCoffeeDB","timestamp":"2025-07-21T21:18:42.522Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T18:02:53.797Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T18:03:42.652Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T18:04:30.667Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T18:05:15.385Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T18:07:53.128Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T18:08:34.810Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T18:11:29.426Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T18:12:19.099Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T18:14:58.252Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T18:15:41.021Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-24T19:03:42.690Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-24T19:04:37.230Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-25T06:20:25.188Z"}
+{"level":"error","message":"❌ MongoDB connection error:","timestamp":"2025-07-25T06:20:25.263Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-25T06:21:47.375Z"}
+{"level":"info","message":"✅ MongoDB Connected: cluster1-shard-00-00.5rgxx.mongodb.net","timestamp":"2025-07-25T06:21:52.535Z"}
+{"level":"info","message":"🗄️  Database Name: BizCoffeeDB","timestamp":"2025-07-25T06:21:52.536Z"}
+{"level":"warn","message":"⚠️ Mongoose disconnected","timestamp":"2025-07-25T09:51:33.827Z"}
+{"level":"info","message":"✅ Mongoose connected to MongoDB","timestamp":"2025-07-25T09:51:34.005Z"}
+{"level":"warn","message":"⚠️ Mongoose disconnected","timestamp":"2025-07-25T10:13:17.875Z"}
+{"level":"info","message":"✅ Mongoose connected to MongoDB","timestamp":"2025-07-25T10:13:17.896Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-25T10:15:37.917Z"}
+{"level":"info","message":"✅ MongoDB Connected: cluster1-shard-00-00.5rgxx.mongodb.net","timestamp":"2025-07-25T10:15:41.969Z"}
+{"level":"info","message":"🗄️  Database Name: BizCoffeeDB","timestamp":"2025-07-25T10:15:41.973Z"}
+{"level":"warn","message":"⚠️ Mongoose disconnected","timestamp":"2025-07-25T10:27:53.839Z"}
+{"level":"info","message":"✅ Mongoose connected to MongoDB","timestamp":"2025-07-25T10:27:54.102Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-25T10:55:56.999Z"}
+{"level":"info","message":"✅ MongoDB Connected: cluster1-shard-00-01.5rgxx.mongodb.net","timestamp":"2025-07-25T10:56:01.251Z"}
+{"level":"info","message":"🗄️  Database Name: BizCoffeeDB","timestamp":"2025-07-25T10:56:01.256Z"}
+{"level":"info","message":"🌐 Connecting to MongoDB...","timestamp":"2025-07-25T10:57:41.164Z"}
+{"level":"info","message":"✅ MongoDB Connected: cluster1-shard-00-01.5rgxx.mongodb.net","timestamp":"2025-07-25T10:57:44.747Z"}
+{"level":"info","message":"🗄️  Database Name: BizCoffeeDB","timestamp":"2025-07-25T10:57:44.756Z"}
